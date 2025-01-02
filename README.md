@@ -1,2 +1,1 @@
-# Agent-SURF
-Automate webtasks, testing, and more with Artificial Intelligence
+<h1 align="center">Agent SURF</h1>
