@@ -1,4 +1,7 @@
-const { chromium } = require("playwright");
+const randomUseragent = require("random-useragent");
+const { chromium } = require("playwright-extra");
+const stealth = require("puppeteer-extra-plugin-stealth")();
+chromium.use(stealth);
 const fs = require("fs");
 
 async function delay(ms) {
@@ -6,15 +9,21 @@ async function delay(ms) {
 }
 
 async function browser() {
+  const userAgent = randomUseragent.getRandom();
   const browser = await chromium.launch({ headless: false });
-
-  // Load storage state from session.json if it exists
   let storage = {};
   if (fs.existsSync("session.json")) {
     storage = fs.readFileSync("session.json", "utf8");
   }
 
   const context = await browser.newContext({
+    userAgent: userAgent,
+    viewport: {
+      width: Math.floor(Math.random() * (1200 - 800 + 1)) + 800,
+      height: Math.floor(Math.random() * (1000 - 600 + 1)) + 600,
+    },
+    locale: "en-US",
+    timezoneId: "America/Los_Angeles",
     storageState: storage ? JSON.parse(storage) : {},
   });
 
