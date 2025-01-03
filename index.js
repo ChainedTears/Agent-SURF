@@ -5,22 +5,24 @@
   - Loop array length times and send only step[i]
 */
 
-const { chromium } = require("playwright");
+const randomUseragent = require("random-useragent");
+const { chromium } = require("playwright-extra");
+const stealth = require("puppeteer-extra-plugin-stealth")();
+chromium.use(stealth);
 const { OpenAI } = require("openai");
 const { JSDOM } = require("jsdom");
 const fs = require("fs");
 const axios = require("axios");
 
-// OpenAI local server configuration
 const client = new OpenAI({
-  baseURL: "https://api.groq.com/openai/v1/",
-  apiKey: "", // https://console.groq.com/keys
+  baseURL: "http://localhost:1234/v1", // http://localhost:1234/v1
+  apiKey: "lm-studio", // lm-studio
 });
 
 let plans;
 var html = null;
-const websiteURL = "https://google.com/";
-const prompt = "Check the weather in New York City";
+const websiteURL = "https://chainedtears.dev/";
+const prompt = "Click on the DuckOS project";
 
 /* (async () => {
   let temphtml = (await axios.get(websiteURL)).data;
@@ -90,18 +92,15 @@ You generate a minimal set of steps required to complete the task.
 The steps are passed to an agent that generates Playwright code for execution.
 Your output should be clear, focused, and minimal.
 Your output should not contain attributes that help the execution agent or any code.
+If the prompt requires you to extract data from a website, try getting all data in one step.
 
 Example:
 
 Prompt: Search for cute cats on Google
 
-Response:
+Response Format:
 
-Total Steps: 3
-
-1. Open website https://google.com
-2. Enter "cats" into the search bar
-3. Press enter
+3,open google,input cute cats into the search bar,press enter
 
             `,
         },
@@ -147,8 +146,10 @@ Strictly focus on the action for the assigned step — no additional steps or un
 Always wrap the function in an async format, assuming the browser is already open and the page context is set.
 Output ONLY the script — do not explain, comment, or provide any context. Just the script.
 You may not use any attribute values or names that are not in the HTML provided.
-You may not identify elements by the attribute "name"
+Always use "id", "class" or "value" attributes if available.
 If the element is a input, prioritize the id or value attribute.
+Step one does not have HTML. You may ignore the HTML for step one.
+Add short delays between actions to mimic human-like behavior.
 
 Example task:
 
@@ -190,23 +191,25 @@ If the assigned step is 3 (Press enter), your expected response is:
 
 (async () => {
   plans = await runPlanner();
-  var stepsRegex = /Total Steps:\s*(\d+)/;
-  const match = plans ? plans.match(stepsRegex) : null;
-  if (!match || !match[1]) {
-    console.error("Error: 'Total Steps' not found in planner response.");
-    process.exit(1);
-  }
-
-  const stepsRequired = parseInt(match[1], 10);
+  plansarray = plans.split(",");
+  const userAgent = randomUseragent.getRandom();
+  const stepsRequired = plansarray[0];
   // console.log("Total Steps: " + stepsRequired + "\n\n -------------- \n");
   const storage = fs.readFileSync("session.json", "utf-8");
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({
+    userAgent: userAgent,
+    viewport: {
+      width: Math.floor(Math.random() * (1200 - 800 + 1)) + 800,
+      height: Math.floor(Math.random() * (1000 - 600 + 1)) + 600,
+    },
+    locale: "en-US",
+    timezoneId: "America/Los_Angeles",
     storageState: JSON.parse(storage),
   });
   const page = await context.newPage();
 
-  for (let i = 0; i < stepsRequired; i++) {
+  for (let i = 0; i < plansarray.length - 1; i++) {
     /* const websiteHTMLRaw = await page.content();
     const dom = new JSDOM(websiteHTMLRaw);
     const document = dom.window.document;
@@ -226,23 +229,25 @@ If the assigned step is 3 (Press enter), your expected response is:
       elements.forEach((i) => {
         const style = window.getComputedStyle(i);
         if (
-          style.display === "none" ||
-          style.visibility === "hidden" ||
-          style.opacity === "0"
+          (style.display === "none" ||
+            style.visibility === "hidden" ||
+            style.opacity === "0") &&
+          i.tagName.toLowerCase() !== "input"
         ) {
           i.remove();
         }
       });
+
       return document.body.innerHTML
         .replace(/\n\s*/g, "")
         .replace(/>\s+</g, "><")
         .trim();
     });
     const executionAgentPrompt = `
-Step to do: ${i + 1} \n\n
-Complete list of steps: \n ${plans} \n\n
+Instruction: ${plansarray[i + 1]}
 Website HTML: ${html}
     `;
+    console.log(executionAgentPrompt);
     // console.log("\n" + executionAgentPrompt + "\n");
     const codeUnfiltered = await runExecutionAgent(executionAgentPrompt);
     const codeToExecute = codeUnfiltered.replace(
@@ -254,11 +259,9 @@ Website HTML: ${html}
     const storage = await context.storageState();
     fs.writeFileSync("session.json", JSON.stringify(storage));
 
-    if (i === stepsRequired - 1) {
-      console.log("Closing browser...");
-      const storage = await context.storageState();
-      fs.writeFileSync("session.json", JSON.stringify(storage));
-      await browser.close();
+    if (i === stepsRequired) {
+      console.log("Done! Browser session saved.");
+      break;
     }
   }
 })();
