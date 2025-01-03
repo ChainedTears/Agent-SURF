@@ -35,3 +35,15 @@ npm install
 <hr>
 
 <h2 align="center">🏗️ Architecture Overview 🧱</h2>
+<img align="center" src="chart.png"/>
+
+<hr>
+
+<h2 align="center">🚀 Support the Project 💖</h2>
+<p align="center">
+  If you find Agent SURF useful, give this repo a ⭐ and share it with others who might benefit!
+</p>
+
+<hr>
+
+<p align="center"><em>Built with ❤️ by Arthur Jiang and Nam Le. Happy automating!</em></p>
