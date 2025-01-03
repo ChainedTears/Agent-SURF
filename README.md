@@ -26,10 +26,10 @@ npm install
 </code></pre>
 
 <h3>Usage:</h3>
-<pre><code>node script.js</code></pre>
+<pre><code>node index.js</code></pre>
 
 <p align="center">
-  <em>Once the installation is complete, run the script using the above command and let Agent SURF handle the rest!</em>
+  <em>Rememeber to customize the prompt inside index.js!</em>
 </p>
 
 <hr>
