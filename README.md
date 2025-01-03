@@ -1,18 +1,33 @@
 <h1 align="center">🏄 Agent SURF 🌐</h1>
-<p align="center">This project is meant to gather information from websites without people having to manually copy and paste the text from the websites. It utilizes Playwright, Groq API and Puppeteer Stealth. It takes a prompt (the task) and will come up with steps to complete it. Execution agents then follows the steps one by one to accomplish the user's intended actions.</p> <!-- Expand on this -->
+
+<p align="center">
+  <strong>Agent SURF</strong> is an advanced automation tool designed to gather information from websites without the need for manual copy-pasting. 
+  Using powerful technologies like <strong>Playwright</strong>, <strong>Groq API</strong>, and <strong>Puppeteer Stealth</strong>, 
+  it takes user prompts (tasks) and breaks them down into actionable steps. The execution agents then follow these steps to 
+  efficiently complete the desired actions. Say goodbye to repetitive tasks—Agent SURF does it all for you!
+</p>
+
 <hr>
-<h1 align="center">🛠️ Installation Guide 📖</h1>
-<h3>Requirements:</h2>
+
+<h2 align="center">🛠️ Installation Guide 📖</h2>
+
+<h3>Prerequisites:</h3>
 <ul>
-  <li><p><a href="https://nodejs.org/en">Node</a></p></li>
-  <li><p><a href="https://www.npmjs.com/">npm</a></p></li>
-  <li><p>Any Chat Completion API provider that supports OpenAI (<a href="https://console.groq.com/keys">Groq</a> Recommended)</p></li>
+  <li><a href="https://nodejs.org/en" target="_blank">Node.js</a> (Required for running the script)</li>
+  <li><a href="https://www.npmjs.com/" target="_blank">npm</a> (Used to manage project dependencies)</li>
+  <li>A Chat Completion API provider that supports OpenAI. <strong><a href="https://console.groq.com/keys" target="_blank">Groq</a> is recommended.</strong></li>
 </ul>
-<h3>Installation:</h3>
+
+<h3>Installation Steps:</h3>
 <pre><code>git clone https://github.com/ChainedTears/Agent-SURF
 cd Agent-SURF
 npm init -y
 npm install
 </code></pre>
+
 <h3>Usage:</h3>
 <pre><code>node script.js</code></pre>
+
+<p align="center">
+  <em>Once the installation is complete, run the script using the above command and let Agent SURF handle the rest!</em>
+</p>
