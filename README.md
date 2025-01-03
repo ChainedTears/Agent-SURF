@@ -31,3 +31,7 @@ npm install
 <p align="center">
   <em>Once the installation is complete, run the script using the above command and let Agent SURF handle the rest!</em>
 </p>
+
+<hr>
+
+<h2 align="center">🏗️ Architecture Overview 🧱</h2>
