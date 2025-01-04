@@ -1,4 +1,4 @@
-<p align="center"><img src="logo.png" width="100px"/></p>
+<p align="center"><img src="logo.png" width="200px"/></p>
 <h1 align="center">🏄 Agent SURF 🌐</h1>
 
 <p align="center">
