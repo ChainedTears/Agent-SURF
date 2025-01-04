@@ -1,28 +1,19 @@
-/*
- Instead of having the whole steps sent to execution agent, only send the step we need
-  - Ask planner agent to format steps like step1,step2,step3
-  - Split by , and add to array
-  - Loop array length times and send only step[i]
-*/
-
 const randomUseragent = require("random-useragent");
 const { chromium } = require("playwright-extra");
 const stealth = require("puppeteer-extra-plugin-stealth")();
 chromium.use(stealth);
 const { OpenAI } = require("openai");
-const { JSDOM } = require("jsdom");
 const fs = require("fs");
-const axios = require("axios");
 
 const client = new OpenAI({
-  baseURL: "http://localhost:1234/v1", // http://localhost:1234/v1
-  apiKey: "lm-studio", // lm-studio
+  baseURL: "", // http://localhost:1234/v1
+  apiKey: "", // lm-studio
 });
 
 let plans;
 var html = null;
-const websiteURL = "https://chainedtears.dev/";
-const prompt = "Click on the DuckOS project";
+const websiteURL = "";
+const prompt = "";
 
 /* (async () => {
   let temphtml = (await axios.get(websiteURL)).data;
@@ -200,8 +191,8 @@ If the assigned step is 3 (Press enter), your expected response is:
   const context = await browser.newContext({
     userAgent: userAgent,
     viewport: {
-      width: Math.floor(Math.random() * (1200 - 800 + 1)) + 800,
-      height: Math.floor(Math.random() * (1000 - 600 + 1)) + 600,
+      width: Math.floor(Math.random() * (1920 - 800 + 1)) + 800,
+      height: Math.floor(Math.random() * (1080 - 600 + 1)) + 600,
     },
     locale: "en-US",
     timezoneId: "America/Los_Angeles",
