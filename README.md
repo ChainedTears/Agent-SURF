@@ -43,7 +43,4 @@ npm install
 <p align="center">
   If you find Agent SURF useful, give this repo a ⭐ and share it with others who might benefit!
 </p>
-
-<hr>
-
 <p align="center"><em>Built with ❤️ by Arthur Jiang and Nam Le. Happy automating!</em></p>
