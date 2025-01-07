@@ -27,7 +27,7 @@ npm install
 </code></pre>
 
 <h3>Usage:</h3>
-<pre><code>node index.js</code></pre>
+<pre><code>node script.js</code></pre>
 
 <p align="center">
   <em>Rememeber to customize the prompt inside index.js and set your own API key before starting the script!</em>
