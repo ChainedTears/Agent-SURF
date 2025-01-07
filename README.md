@@ -3,7 +3,7 @@
 
 <p align="center">
   <strong>Agent SURF</strong> is an advanced automation tool designed to gather information from websites without the need for manual copy-pasting. 
-  Using powerful technologies like <strong>Playwright</strong>, <strong>Groq API</strong>, and <strong>Puppeteer Stealth</strong>, 
+  Using powerful technologies like <strong>Playwright, AppleScript, Powershell</strong>, <strong>Groq API</strong>, and <strong>Puppeteer Stealth</strong>, 
   it takes user prompts (tasks) and breaks them down into actionable steps. The execution agents then follow these steps to 
   efficiently complete the desired actions. Say goodbye to repetitive tasks—Agent SURF does it all for you! <a href="https://www.youtube.com/watch?v=W87v1aeGvHo">Demo Video</a>
 </p>
