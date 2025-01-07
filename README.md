@@ -17,7 +17,7 @@
   <li><a href="https://nodejs.org/en" target="_blank">Node.js</a> (Required for running the script)</li>
   <li><a href="https://www.npmjs.com/" target="_blank">npm</a> (Used to manage project dependencies)</li>
   <li>A Chat Completion API provider that supports OpenAI. <strong><a href="https://console.groq.com/keys" target="_blank">Groq</a> is recommended.</strong></li>
-  <li>Enabling Accessibility Permissions for the app you are executing this script in (Terminal, VSCode, Etc) <b>Settings -> Privacy and Security -> Accessibility -> Terminal -> On</b></li>
+  <li>Enabling Accessibility Permissions for the app you are executing this script in (Terminal, VSCode, Etc) <b>Settings -> Privacy and Security -> Accessibility -> <App> -> On</b></li>
 </ul>
 
 <h3>Installation Steps:</h3>
