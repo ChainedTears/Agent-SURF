@@ -39,7 +39,7 @@ npm install
 <hr>
 
 <h2 align="center">🏗️ Architecture Overview 🧱</h2>
-<img align="center" src="chart.png"/>
+<p align="center">In Progress</p>
 
 <hr>
 
