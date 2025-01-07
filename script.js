@@ -7,11 +7,11 @@ const fs = require("fs");
 const applescript = require("applescript");
 
 const client = new OpenAI({
-  baseURL: "https://api.groq.com/openai/v1/", // http://localhost:1234/v1
-  apiKey: "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", // lm-studio
+  baseURL: "", // http://localhost:1234/v1
+  apiKey: "", // lm-studio
 });
 
-const prompt = "Turn WiFi off and shutdown my computer";
+const prompt = "";
 
 async function runPlanner() {
   const userPrompt = `User Prompt: ${prompt}`;
