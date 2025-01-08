@@ -39,22 +39,8 @@ npm install
 <hr>
 
 <h2 align="center">🏗️ Architecture Overview 🧱</h2>
-<p align="center">In Progress</p>
 <code>
-  Start
-  Is Mac or Windows
-    Is mac
-      Task needs AppleScript or Playwright
-        AppleScript
-        Playwright .playwright
-    Is Windows
-      Task needs Powershell or Playwright
-        Powershell
-        Playwright .playwright
-(.playwright)
-  Planner Agent outputs steps needed to complete task .planner
-(.planner)
-  Execution Agents executes steps individually
+  in progress
 </code>
 
 <hr>
