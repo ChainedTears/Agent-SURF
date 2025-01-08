@@ -76,7 +76,7 @@ graph TD
     Y -- Yes --> AA;
     Z -- Yes --> AA;
 
-    subgraph " "
+    subgraph "Execution Agents"
         direction LR
         K["runExecutionAgent(AppleScript, step, html)"]
         L["runExecutionAgent(Playwright, step, html)"]
@@ -84,7 +84,7 @@ graph TD
         N["runExecutionAgent(Playwright, step, html)"]
     end
     
-    subgraph " "
+    subgraph "Code Execution"
       direction LR
       O["applescript.execString(code)"]
       Q["exec('powershell...', code)"]
@@ -96,7 +96,6 @@ graph TD
         P["eval(code)"]
         R["eval(code)"]
     end
-
 
     E["runPlanner()"]
 ```
