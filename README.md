@@ -12,7 +12,7 @@
 
 <h2 align="center">🛠️ Installation Guide 📖</h2>
 
-<h3>Prerequisites:</h3>
+<h3>📦 Prerequisites:</h3>
 <ul>
   <li><a href="https://nodejs.org/en" target="_blank">Node.js</a> (Required for running the script)</li>
   <li><a href="https://www.npmjs.com/" target="_blank">npm</a> (Used to manage project dependencies)</li>
@@ -22,14 +22,14 @@
   <li>Terminal/Command Prompt launched with Administrator Access</li>
 </ul>
 
-<h3>Installation Steps:</h3>
+<h3>🔧 Installation Steps:</h3>
 <pre><code>git clone https://github.com/ChainedTears/Agent-SURF
 cd Agent-SURF
 npm init -y
 npm install
 </code></pre>
 
-<h3>Usage:</h3>
+<h3>🏁 Usage:</h3>
 <pre><code>node script.js</code></pre>
 
 <p align="center">
@@ -39,9 +39,8 @@ npm install
 <hr>
 
 <h2 align="center">🏗️ Architecture Overview 🧱</h2>
-<pre><code>
-  in progress
-</code></pre>
+<p align="center">In Progress
+</p>
 
 <hr>
 
