@@ -39,9 +39,9 @@ npm install
 <hr>
 
 <h2 align="center">🏗️ Architecture Overview 🧱</h2>
-<code>
+<pre><code>
   in progress
-</code>
+</code></pre>
 
 <hr>
 
