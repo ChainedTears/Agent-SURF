@@ -1,4 +1,4 @@
-![](logo.png)
+<img width="200" src="logo.png">
 
 # 🏄 Agent SURF 🌐
 
