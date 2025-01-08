@@ -41,63 +41,46 @@ node script.js
 
 ```mermaid
 graph TD
-    A[Start] --> B{OS Platform?};
-    B -- darwin --> C[MacOS Execution];
-    B -- win32 --> D[Windows Execution];
-    C --> E[Run Planner];
-    D --> E;
-    E --> F{Language?};
-    F -- AppleScript --> G[AppleScript Loop];
-    F -- Playwright --> H[Playwright Loop MacOS];
-    F -- Powershell --> I[Powershell Loop];
-    F -- Playwright --> J[Playwright Loop Windows];
-    G --> K[Run Execution Agent];
-    H --> L[Run Execution Agent];
-    I --> M[Run Execution Agent];
-    J --> N[Run Execution Agent];
-    K --> O[Execute AppleScript];
-    L --> P[Execute Playwright MacOS];
-    M --> Q[Execute Powershell];
-    N --> R[Execute Playwright Windows];
-    O --> S[Log Result/Error];
-    P --> T[Log Result/Error];
-    Q --> U[Log Result/Error];
-    R --> V[Log Result/Error];
-    S --> W{Loop End?};
-    T --> X{Loop End?};
-    U --> Y{Loop End?};
-    V --> Z{Loop End?};
-    W -- No --> G;
-    X -- No --> H;
-    Y -- No --> I;
-    Z -- No --> J;
-    W -- Yes --> AA[End];
-    X -- Yes --> AA;
-    Y -- Yes --> AA;
-    Z -- Yes --> AA;
-
-    subgraph "Execution Agents"
-        direction LR
-        K["runExecutionAgent(AppleScript, step, html)"]
-        L["runExecutionAgent(Playwright, step, html)"]
-        M["runExecutionAgent(Powershell, step, html)"]
-        N["runExecutionAgent(Playwright, step, html)"]
-    end
+    A[Start] --> B{OS Platform is darwin?};
+    B -- Yes --> C[Run Planner];
+    B -- No --> J{OS Platform is win32?};
+     J -- Yes --> C;
+    J -- No --> Z[End];
+    C --> D{Generated Plan};
+    D --> E{Language is AppleScript?};
+    E -- Yes --> F[Loop Through Steps];
+    E -- No --> G{Language is Playwright?};
+    G -- Yes --> H[Launch Playwright Browser];
+    G -- No --> Z;
+    F --> I[Execute AppleScript step];
+     I--> K{Next Step};
+     K -- Yes --> F;
+     K -- No --> Z;
+    H --> L[Loop Through Steps];
+     L--> M[Get HTML of current page and sends to Execution Agent];
+     M --> N[Execute Playwright Step];
+     N --> O{Next Step};
+    O -- Yes --> L;
+    O -- No --> Z;
+     C-->P[Run Planner ];
+    P-->Q{Generated Plan win32};
+        Q --> R{Language is Powershell?};
+    R -- Yes --> S[Loop Through Steps ];
+    R -- No --> T{Language is Playwright? win32};
+     T -- Yes --> U[Launch Playwright Browser win32];
+        T -- No --> Z;
+    S --> V[Execute Powershell step];
+         V-->W{Next Step};
+         W -- Yes --> S;
+         W -- No --> Z;
+       U --> X[Loop Through Steps win32];
+       X--> Y[Get HTML of current page win32];
+       Y --> AA[Execute Playwright Step win32];
+        AA --> AB{Next Step};
+        AB -- Yes --> X;
+        AB -- No --> Z;
     
-    subgraph "Code Execution"
-      direction LR
-      O["applescript.execString(code)"]
-      Q["exec('powershell...', code)"]
-    end
-
-    subgraph "Playwright Setup"
-        H["Initialize Playwright (MacOS)"]
-        J["Initialize Playwright (Windows)"]
-        P["eval(code)"]
-        R["eval(code)"]
-    end
-
-    E["runPlanner()"]
+    Z[End];
 ```
 
 * * *
