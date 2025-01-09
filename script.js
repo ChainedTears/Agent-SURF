@@ -1,32 +1,33 @@
+const stealth = require("puppeteer-extra-plugin-stealth")();
 const randomUseragent = require("random-useragent");
 const { chromium } = require("playwright-extra");
-const stealth = require("puppeteer-extra-plugin-stealth")();
-chromium.use(stealth);
+const { exec } = require("child_process");
 const { OpenAI } = require("openai");
 const fs = require("fs");
-let applescript;
-const { exec } = require("child_process");
 const os = require("os");
+chromium.use(stealth);
+let promptlanguage;
+let applescript;
+let example;
+
+const prompt =
+  "Shutdown my computer";
 
 const client = new OpenAI({
-  baseURL: "", // http://localhost:1234/v1
-  apiKey: "", // lm-studio
+  baseURL: "https://api.groq.com/openai/v1/", // http://localhost:1234/v1
+  apiKey: "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", // lm-studio
 });
-
-const prompt = "";
-
-// set language variable to powershell if operating system is windows and to applescript if operating system is mac
-
-const promptlanguage = os.platform() === "win32" ? "Powershell" : "AppleScript";
-let example;
 
 if (os.platform() === "darwin") {
   example = `
+  \`\`\`applescript
   tell application "Spotify"
       activate
     end tell
+  \`\`\`
   `;
   applescript = require("applescript");
+  promptlanguage = "AppleScript";
 } else if (os.platform() === "win32") {
   example = `
   $spotifyPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\Spotify.exe"
@@ -36,6 +37,7 @@ if (Test-Path $spotifyPath) {
     Write-Output "Spotify is not installed or the executable path is incorrect."
 }
   `;
+  promptlanguage = "Powershell";
 }
 
 async function runPlanner() {
@@ -56,6 +58,8 @@ async function runPlanner() {
   If instructions require you to generate text content, do not seperate the writing into multiple steps, do it in one.
   Remember to not provide content in the instructions you generate, just the instructions.
   Remember to not use context between steps - the step will be executed by different agents.
+  If you are using Playwright, assume the browser is already open in the environment the task will be executed in.
+  Never predetermine the button to click. For example, instead of saying "click on the "name" button", say "click on the button that does this"
   
   Example:
   
@@ -77,7 +81,7 @@ async function runPlanner() {
   }
 }
 
-async function runExecutionAgent(language, instruction, html) {
+async function runExecutionAgent(language, instruction, html, screencontent) {
   try {
     const completion = await client.chat.completions.create({
       model: "llama-3.3-70b-versatile",
@@ -109,7 +113,7 @@ async function runExecutionAgent(language, instruction, html) {
         },
         {
           role: "user",
-          content: `Language: ${language}\nInstruction: ${instruction}\nHTML: ${html}\n Original Prompt: ${prompt} (For context only)`,
+          content: `Language: ${language}\nInstruction: ${instruction}\nHTML: ${html}\n Original Prompt: ${prompt} (For context only)\n`,
         },
       ],
       temperature: 0.5,
@@ -130,10 +134,10 @@ if (os.platform() === "darwin") {
       const [language, count, ...steps] = plans.split(",");
       if (language === "AppleScript") {
         for (let i = 0; i < Number(count); i++) {
-          const html = "Not existent, Playwright only";
+          const html = "Playwright only";
           const code = await runExecutionAgent(language, steps[i].trim(), html);
           const cleancode = code.replace(
-            /```appleScript\s([\s\S]*?)\s*```/g,
+            /```applescript\s([\s\S]*?)\s*```/g,
             "$1"
           );
           console.log(
@@ -141,19 +145,7 @@ if (os.platform() === "darwin") {
             steps[i].trim()
           );
           console.log(`Generated Code for Step ${i + 1}:\n`, cleancode);
-          applescript.execString(cleancode, (err, rtn) => {
-            if (err) {
-              console.error(
-                "AppleScript Error:",
-                err + "\n ---------------------- \n"
-              );
-            } else {
-              console.log(
-                "AppleScript Result:",
-                rtn + "\n ---------------------- \n"
-              );
-            }
-          });
+          applescript.execString(cleancode);
         }
       } else if (language === "Playwright") {
         const userAgent = randomUseragent.getRandom();
@@ -199,6 +191,8 @@ if (os.platform() === "darwin") {
           );
           console.log(`Generated Code for Step ${i + 1}:\n`, cleancode);
           await eval(cleancode);
+          const newStorage = await context.storageState();
+          fs.writeFileSync("session.json", JSON.stringify(newStorage));
         }
       }
     } catch (error) {
@@ -284,6 +278,8 @@ if (os.platform() === "darwin") {
           );
           console.log(`Generated Code for Step ${i + 1}:\n`, cleancode);
           await eval(cleancode);
+          const newStorage = await context.storageState();
+          fs.writeFileSync("session.json", JSON.stringify(newStorage));
         }
       }
     } catch (error) {
