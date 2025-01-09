@@ -41,42 +41,43 @@ node script.js
 
 ```mermaid
 graph TD
-    A[Start] --> B{OS Platform is darwin?};
-    B -- Yes --> C[Set language to AppleScript];
-    C --> D[Load AppleScript Module];
-    B -- No --> E{OS Platform is win32?};
-    E -- Yes --> F[Set language to PowerShell];
-    F --> G[Set PowerShell Example Script];
-    E -- No --> Z[End];
+    A[Start] --> B[Check OS Platform]
+    B -->|macOS| C[Set AppleScript Example]
+    B -->|Windows| D[Set Powershell Example]
+    C --> E[Run Planner for macOS]
+    D --> F[Run Planner for Windows]
+    E --> G[Generate Plan]
+    F --> G
+    G --> H[Parse Plan into Steps]
+    H --> I[Check Language - AppleScript]
+    I --> J[Execute AppleScript Step]
+    H --> K[Check Language - Playwright]
+    K --> L[Execute Playwright Step]
+    H --> M[Check Language - Powershell]
+    M --> N[Execute Powershell Step]
+    J --> O[End]
+    L --> O
+    N --> O
+    O --> P[Store New Session State]
+    P --> Q[End]
 
-    C --> H[Run Planner];
-    F --> H;
+    subgraph MacOS Steps
+        C --> E
+        E --> G
+        G --> H
+        H --> I
+        I --> J
+        J --> O
+    end
 
-    H --> I{Generated Plan};
-    I -- AppleScript --> J[Parse Plan for AppleScript];
-    I -- PowerShell --> K[Parse Plan for PowerShell];
-    I -- Playwright --> L[Launch Playwright Browser];
-
-    J --> M[Execute AppleScript Steps];
-    K --> N[Execute PowerShell Steps];
-    L --> O[Set Playwright Browser Context];
-
-    M --> P{Next Step?};
-    P -- Yes --> M;
-    P -- No --> Z;
-
-    N --> Q{Next Step?};
-    Q -- Yes --> N;
-    Q -- No --> Z;
-
-    O --> R[Execute Playwright Steps];
-    R --> S{Next Step?};
-    S -- Yes --> R;
-    S -- No --> T[Save Browser Session];
-
-    T --> Z;
-    Z[End];
-;
+    subgraph Windows Steps
+        D --> F
+        F --> G
+        G --> H
+        H --> M
+        M --> N
+        N --> O
+    end
 ```
 
 * * *
