@@ -48,7 +48,7 @@ graph TD
     E -- Yes --> F[Set language to PowerShell];
     F --> G[Set PowerShell Example Script];
     E -- No --> Z[End];
-    
+
     C --> H[Run Planner];
     F --> H;
 
@@ -76,6 +76,7 @@ graph TD
 
     T --> Z;
     Z[End];
+;
 ```
 
 * * *
