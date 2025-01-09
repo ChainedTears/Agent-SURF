@@ -42,44 +42,39 @@ node script.js
 ```mermaid
 graph TD
     A[Start] --> B{OS Platform is darwin?};
-    B -- Yes --> C[Run Planner];
-    B -- No --> J{OS Platform is win32?};
-     J -- Yes --> C;
-    J -- No --> Z[End];
-    C --> D{Generated Plan};
-    D --> E{Language is AppleScript?};
-    E -- Yes --> F[Loop Through Steps];
-    E -- No --> G{Language is Playwright?};
-    G -- Yes --> H[Launch Playwright Browser];
-    G -- No --> Z;
-    F --> I[Execute AppleScript step];
-     I--> K{Next Step};
-     K -- Yes --> F;
-     K -- No --> Z;
-    H --> L[Loop Through Steps];
-     L--> M[Get HTML of current page and sends to Execution Agent];
-     M --> N[Execute Playwright Step];
-     N --> O{Next Step};
-    O -- Yes --> L;
-    O -- No --> Z;
-     C-->P[Run Planner ];
-    P-->Q{Generated Plan win32};
-        Q --> R{Language is Powershell?};
-    R -- Yes --> S[Loop Through Steps ];
-    R -- No --> T{Language is Playwright? win32};
-     T -- Yes --> U[Launch Playwright Browser win32];
-        T -- No --> Z;
-    S --> V[Execute Powershell step];
-         V-->W{Next Step};
-         W -- Yes --> S;
-         W -- No --> Z;
-       U --> X[Loop Through Steps win32];
-       X--> Y[Get HTML of current page win32];
-       Y --> AA[Execute Playwright Step win32];
-        AA --> AB{Next Step};
-        AB -- Yes --> X;
-        AB -- No --> Z;
+    B -- Yes --> C[Set language to AppleScript];
+    C --> D[Load AppleScript Module];
+    B -- No --> E{OS Platform is win32?};
+    E -- Yes --> F[Set language to PowerShell];
+    F --> G[Set PowerShell Example Script];
+    E -- No --> Z[End];
     
+    C --> H[Run Planner];
+    F --> H;
+
+    H --> I{Generated Plan};
+    I -- AppleScript --> J[Parse Plan for AppleScript];
+    I -- PowerShell --> K[Parse Plan for PowerShell];
+    I -- Playwright --> L[Launch Playwright Browser];
+
+    J --> M[Execute AppleScript Steps];
+    K --> N[Execute PowerShell Steps];
+    L --> O[Set Playwright Browser Context];
+
+    M --> P{Next Step?};
+    P -- Yes --> M;
+    P -- No --> Z;
+
+    N --> Q{Next Step?};
+    Q -- Yes --> N;
+    Q -- No --> Z;
+
+    O --> R[Execute Playwright Steps];
+    R --> S{Next Step?};
+    S -- Yes --> R;
+    S -- No --> T[Save Browser Session];
+
+    T --> Z;
     Z[End];
 ```
 
