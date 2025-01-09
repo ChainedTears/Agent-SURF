@@ -24,7 +24,7 @@
 git clone https://github.com/ChainedTears/Agent-SURF
 cd Agent-SURF
 npm init -y
-npm install
+npm install puppeteer-extra playwright-extra random-useragent applescript openai fs
 ```
 
 ### 🏁 Usage:
