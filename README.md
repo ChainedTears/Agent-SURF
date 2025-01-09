@@ -49,17 +49,18 @@ graph TD
     E --> G[Generate Plan]
     F --> G
     G --> H[Parse Plan into Steps]
-    H --> I[Check Language - AppleScript]
-    I --> J[Execute AppleScript Step]
-    H --> K[Check Language - Playwright]
-    K --> L[Execute Playwright Step]
-    H --> M[Check Language - Powershell]
-    M --> N[Execute Powershell Step]
-    J --> O[End]
-    L --> O
-    N --> O
-    O --> P[Store New Session State]
-    P --> Q[End]
+    H --> I[Loop for Number of Steps]
+    I --> J[Check Language - AppleScript]
+    J --> K[Execute AppleScript Step]
+    I --> L[Check Language - Playwright]
+    L --> M[Execute Playwright Step]
+    I --> N[Check Language - Powershell]
+    N --> O[Execute Powershell Step]
+    K --> P[End]
+    M --> P
+    O --> P
+    P --> Q[Store New Session State]
+    Q --> R[End]
 
     subgraph MacOS Steps
         C --> E
@@ -67,17 +68,20 @@ graph TD
         G --> H
         H --> I
         I --> J
-        J --> O
+        J --> K
+        K --> P
     end
 
     subgraph Windows Steps
         D --> F
         F --> G
         G --> H
-        H --> M
-        M --> N
+        H --> I
+        I --> N
         N --> O
+        O --> P
     end
+
 ```
 
 * * *
