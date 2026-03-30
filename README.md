@@ -41,48 +41,61 @@ node script.js
 ## 🏗️ Architecture Overview 🧱
 
 ```mermaid
-graph TD
-    A[Start] --> B[Check OS Platform]
-    B -->|macOS| C[Set AppleScript Example]
-    B -->|Windows| D[Set Powershell Example]
-    C --> E[Run Planner for macOS]
-    D --> F[Run Planner for Windows]
-    E --> G[Generate Plan]
+flowchart TD
+    %% Terminal Nodes
+    A([Start]) --> B{Check OS Platform}
+
+    %% OS Setup Logic
+    subgraph OS[1. Environment Setup]
+        direction TB
+        C[Set AppleScript Example] --> E[Run Planner for macOS]
+        D[Set Powershell Example] --> F[Run Planner for Windows]
+    end
+
+    B -- "macOS" --> C
+    B -- "Windows" --> D
+
+    %% Converge to Planning
+    subgraph Planning[2. Plan Generation]
+        direction TB
+        G[Generate AI Plan] --> H[Parse Plan into Steps]
+    end
+
+    E --> G
     F --> G
-    G --> H[Parse Plan into Steps]
-    H --> I[Loop for Number of Steps]
-    I --> J[Check Language - AppleScript]
-    J --> K[Execute AppleScript Step]
-    I --> L[Check Language - Playwright]
-    L --> M[Execute Playwright Step]
-    I --> N[Check Language - Powershell]
-    N --> O[Execute Powershell Step]
-    K --> P[End]
-    M --> P
-    O --> P
-    P --> Q[Store New Session State]
-    Q --> R[End]
 
-    subgraph MacOS Steps
-        C --> E
-        E --> G
-        G --> H
-        H --> I
-        I --> J
-        J --> K
-        K --> P
+    %% Execution Loop
+    H --> I{Iterate Over Steps}
+
+    subgraph Execution[3. Execution Engine]
+        direction TB
+        J{Check Step Language} 
+        J -- "AppleScript" --> K[Execute AppleScript Step]
+        J -- "Playwright" --> M[Execute Playwright Step]
+        J -- "PowerShell" --> O[Execute PowerShell Step]
     end
 
-    subgraph Windows Steps
-        D --> F
-        F --> G
-        G --> H
-        H --> I
-        I --> N
-        N --> O
-        O --> P
-    end
+    I -- "Next Step" --> J
 
+    %% Return to loop
+    K --> I
+    M --> I
+    O --> I
+
+    %% Finish Execution
+    I -- "No More Steps" --> Q[Store New Session State]
+    Q --> R([End])
+
+    %% Theming and Styling
+    classDef process fill:#2d3436,stroke:#636e72,stroke-width:2px,color:#fff,rx:5px,ry:5px
+    classDef decision fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff
+    classDef terminal fill:#00b894,stroke:#55efc4,stroke-width:2px,color:#fff
+    classDef subgraphStyle fill:#f5f6fa,stroke:#dcdde1,stroke-width:2px,stroke-dasharray: 5 5
+    
+    class A,R terminal
+    class B,I,J decision
+    class C,D,E,F,G,H,K,M,O,Q process
+    class OS,Planning,Execution subgraphStyle
 ```
 
 * * *
